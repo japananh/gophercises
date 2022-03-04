@@ -1,4 +1,4 @@
-package main
+package quiz
 
 import (
 	"bufio"
@@ -12,27 +12,6 @@ import (
 	"strings"
 	"time"
 )
-
-func main() {
-	input := readFlags()
-	path := input.path
-	timePerQs := input.timePerQs
-
-	records := readCsvFile(*path)
-	questions := filterQuestions(records)
-
-	if len(questions) == 0 {
-		log.Fatal("Invalid question.")
-	}
-
-	answers := runGame(questions, *timePerQs)
-	count := countCorrectAns(answers)
-
-	time.Sleep(time.Duration(*timePerQs))
-
-	fmt.Println("\nThe number of correct questions are", count)
-	fmt.Println("Total questions are", len(questions))
-}
 
 type input struct {
 	path      *string
@@ -63,10 +42,10 @@ func readCsvFile(filePath string) [][]string {
 	return records
 }
 
-func filterQuestions(questions [][]string) (validQs [][]string) {
+func filterQs(qs [][]string) (validQs [][]string) {
 	re := regexp.MustCompile(`\d+\+\d+`)
 
-	for _, qs := range questions {
+	for _, qs := range qs {
 		question := re.FindString(qs[0])
 		answer, err := strconv.Atoi(qs[1])
 		if err != nil {
@@ -89,7 +68,7 @@ func filterQuestions(questions [][]string) (validQs [][]string) {
 	return
 }
 
-func runGame(questions [][]string, timePerQs int) (answers [][2]int) {
+func getAnsFromInput(qs [][]string, timePerQs int) (ans [][2]int) {
 	fmt.Printf("The game will start after 3 seconds.\nYou have %d seconds to answer each question.", timePerQs)
 	fmt.Print("\n3...")
 	time.Sleep(time.Second)
@@ -99,7 +78,7 @@ func runGame(questions [][]string, timePerQs int) (answers [][2]int) {
 	time.Sleep(time.Second)
 	fmt.Println("-------------------")
 
-	for i, row := range questions {
+	for i, row := range qs {
 		fmt.Printf("-------------------\n* Questions %d: %s\n", i+1, row[0])
 		correctAnswer, _ := strconv.Atoi(row[1])
 
@@ -114,9 +93,9 @@ func runGame(questions [][]string, timePerQs int) (answers [][2]int) {
 			text = strings.Replace(text, "\n", "", -1)
 
 			if text, _ := strconv.Atoi(text); text == correctAnswer {
-				answers = append(answers, [2]int{i, 1})
+				ans = append(ans, [2]int{i, 1})
 			} else {
-				answers = append(answers, [2]int{i, 0})
+				ans = append(ans, [2]int{i, 0})
 			}
 			fmt.Printf("Your answer for question %d: %s", i+1, text)
 		}(reader, i)
@@ -138,7 +117,7 @@ func runGame(questions [][]string, timePerQs int) (answers [][2]int) {
 
 		time.Sleep(time.Second * time.Duration(timePerQs))
 
-		if i <= len(questions)-2 {
+		if i <= len(qs)-2 {
 			fmt.Println("\nTime end. Next question...")
 		}
 	}
@@ -148,8 +127,8 @@ func runGame(questions [][]string, timePerQs int) (answers [][2]int) {
 	return
 }
 
-func countCorrectAns(answers [][2]int) (count int) {
-	for _, answer := range answers {
+func countCorrectAns(ans [][2]int) (count int) {
+	for _, answer := range ans {
 		if answer[1] == 1 {
 			count++
 		}

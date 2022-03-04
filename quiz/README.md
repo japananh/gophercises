@@ -13,6 +13,7 @@ https://github.com/gophercises/quiz/blob/master/README.md
 - [x] Filter invalid answers/questions
 - [x] Print answer to the screen after user press Enter
 - [] Continue loop when user press Enter
+- [] Write test
 
 ## Setup
 
