@@ -19,7 +19,7 @@ type input struct {
 }
 
 func readFlags() *input {
-	path := flag.String("path", "./problem.csv", "csv file path")
+	path := flag.String("path", "./quiz/problem.csv", "csv file path")
 	timePerQs := flag.Int("time", 30, "timer per question per second")
 
 	flag.Parse()

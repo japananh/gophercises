@@ -12,14 +12,14 @@ https://github.com/gophercises/quiz/blob/master/README.md
 - [x] Add timer (30 seconds) via a flag
 - [x] Filter invalid answers/questions
 - [x] Print answer to the screen after user press Enter
-- [] Continue loop when user press Enter
-- [] Write test
+- [ ] Continue loop when user press Enter
+- [ ] Write test
 
 ## Setup
 
 To run this project, you need to install [Go](https://go.dev/doc/install), an editor/IDE such as VSCode/Goland.
 
-```go
-cd quiz
+```bash
+go mod tidy
 go run main.go -path=./problem.csv -time=30
 ```
