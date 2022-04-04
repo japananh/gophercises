@@ -19,6 +19,7 @@ https://github.com/gophercises/urlshort/blob/master/README.md
 To run this project, you need to install [Go](https://go.dev/doc/install), an editor/IDE such as VSCode/Goland.
 
 ```bash
-cd urlshort
+# Run these command in the root folder
+go mod tidy
 go run main.go -file=yaml
 ```

@@ -20,6 +20,7 @@ https://github.com/gophercises/quiz/blob/master/README.md
 To run this project, you need to install [Go](https://go.dev/doc/install), an editor/IDE such as VSCode/Goland.
 
 ```bash
+# Run these command in the root folder
 go mod tidy
 go run main.go -path=./problem.csv -time=30
 ```
