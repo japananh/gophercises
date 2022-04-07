@@ -7,22 +7,15 @@ import (
 )
 
 func RunQuiz() {
-	input := readFlags()
-	path := input.path
-	timePerQs := input.timePerQs
-
-	records := readCsvFile(*path)
-	qs := filterQs(records)
+	input := readFlags("./quiz/problem.csv", 5)
+	records := readCsvFile(input.path)
+	qs := filterValidQs(records)
 
 	if len(qs) == 0 {
-		log.Fatal("Invalid question.")
+		log.Fatal("No question.")
 	}
 
-	ans := getAnsFromInput(qs, *timePerQs)
-	count := countCorrectAns(ans)
-
-	time.Sleep(time.Duration(*timePerQs))
-
-	fmt.Println("Total questions are", len(qs))
-	fmt.Println("\nThe number of correct questions are", count)
+	count := runQuiz(qs, input.timePerQsInSeconds)
+	time.Sleep(time.Second)
+	fmt.Printf("Result: %d/%d\n", count, len(qs))
 }
