@@ -2,6 +2,7 @@ package main
 
 import (
 	"gophercises/cyoa"
+	"gophercises/link"
 	"gophercises/quiz"
 	"gophercises/urlshort"
 )
@@ -11,4 +12,5 @@ func main() {
 	urlshort.RunUrlshort()
 	cyoa.RunServer("./cyoa/layout.html", "./cyoa/story.json")
 	cyoa.RunCLI("./cyoa/story.json")
+	link.Runner("./link/ex4.html")
 }
