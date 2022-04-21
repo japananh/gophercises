@@ -12,7 +12,7 @@ https://github.com/gophercises/link
 - [x] Use DFS algorithm
 - [x] Returns only the outside link for the nested links
 - [x] The result should not include comments
-- [ ] Write test
+- [x] Write test
 
 ## Setup
 
