@@ -21,7 +21,7 @@ func Runner(filename string) {
 		log.Fatal(err)
 	}
 
-	links, err := parse(s)
+	links, err := Parse(s)
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -33,7 +33,7 @@ func Runner(filename string) {
 }
 
 //Parse parses the HTML file and returns Links
-func parse(r io.Reader) ([]Link, error) {
+func Parse(r io.Reader) ([]Link, error) {
 	doc, err := html.Parse(r)
 	if err != nil {
 		return nil, err

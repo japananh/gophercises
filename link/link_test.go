@@ -37,7 +37,7 @@ func TestParse(t *testing.T) {
 			continue
 		}
 
-		output, err := parse(s)
+		output, err := Parse(s)
 
 		if len(output) != len(test.expected) {
 			t.Errorf("Testcase %d: The number of output %d not equal to expected %d", i, len(output), len(test.expected))
