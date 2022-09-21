@@ -4,7 +4,7 @@
 
 https://github.com/gophercises/link
 
-## TODO
+## TODOs
 
 - [x] Parse an HTML file and extract `<a href="">...</a>` tags
 - [x] Use the `x/net/html` package

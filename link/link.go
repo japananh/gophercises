@@ -2,12 +2,11 @@ package link
 
 import (
 	"fmt"
+	"golang.org/x/net/html"
 	"io"
 	"log"
 	"os"
 	"strings"
-
-	"golang.org/x/net/html"
 )
 
 type Link struct {
@@ -32,7 +31,7 @@ func Runner(filename string) {
 	}
 }
 
-//Parse parses the HTML file and returns Links
+// Parse parses the HTML file and returns Links
 func Parse(r io.Reader) ([]Link, error) {
 	doc, err := html.Parse(r)
 	if err != nil {

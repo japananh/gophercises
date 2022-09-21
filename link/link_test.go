@@ -5,31 +5,31 @@ import (
 	"testing"
 )
 
-type parseTest struct {
-	filename string
-	expected []Link
-	err      error
-}
-
-var parseTests = []parseTest{
-	{filename: "ex1.html", expected: []Link{
-		{Href: "/other-page", Text: "A link to another page"},
-	}, err: nil},
-	{filename: "ex2.html", expected: []Link{
-		{Href: "https://www.twitter.com/joncalhoun", Text: "        Check me out on twitter\n            "},
-		{Href: "https://github.com/gophercises", Text: "        Gophercises is on Github!\n    "},
-	}, err: nil},
-	{filename: "ex3.html", expected: []Link{
-		{Href: "#", Text: "Login "},
-		{Href: "/lost", Text: "Lost? Need help?"},
-		{Href: "https://twitter.com/marcusolsson", Text: "@marcusolsson"},
-	}, err: nil},
-	{filename: "ex4.html", expected: []Link{
-		{Href: "/dog-cat", Text: "dog cat "},
-	}, err: nil},
-}
-
 func TestParse(t *testing.T) {
+	type parseTest struct {
+		filename string
+		expected []Link
+		err      error
+	}
+
+	var parseTests = []parseTest{
+		{filename: "ex1.html", expected: []Link{
+			{Href: "/other-page", Text: "A link to another page"},
+		}, err: nil},
+		{filename: "ex2.html", expected: []Link{
+			{Href: "https://www.twitter.com/joncalhoun", Text: "        Check me out on twitter\n            "},
+			{Href: "https://github.com/gophercises", Text: "        Gophercises is on Github!\n    "},
+		}, err: nil},
+		{filename: "ex3.html", expected: []Link{
+			{Href: "#", Text: "Login "},
+			{Href: "/lost", Text: "Lost? Need help?"},
+			{Href: "https://twitter.com/marcusolsson", Text: "@marcusolsson"},
+		}, err: nil},
+		{filename: "ex4.html", expected: []Link{
+			{Href: "/dog-cat", Text: "dog cat "},
+		}, err: nil},
+	}
+
 	for i, test := range parseTests {
 		s, err := os.Open(test.filename)
 		if err != nil {

@@ -3,8 +3,8 @@ package sitemap
 import (
 	"encoding/xml"
 	"flag"
+	"github.com/japananh/gophercises/link"
 	"golang.org/x/exp/slices"
-	"gophercises/link"
 	"io"
 	"log"
 	"net/http"
@@ -35,13 +35,16 @@ func Crawl() {
 
 	// create a xml file
 	filePath := "./sitemap/sitemap.xml"
-	os.Remove(filePath)
+	_ = os.Remove(filePath)
 	xmlFile, err := os.Create(filePath)
 	checkErr(err)
 
 	// write the header to xml file
 	xmlWriter := io.Writer(xmlFile)
-	xmlFile.WriteString(xml.Header)
+	if _, err := xmlFile.WriteString(xml.Header); err != nil {
+		checkErr(err)
+	}
+
 	enc := xml.NewEncoder(xmlWriter)
 	enc.Indent("", "    ")
 
@@ -72,7 +75,9 @@ func iterateUrlListToExtractLink(domain string, visited []string, depth int) ([]
 			continue
 		}
 		visited = append(visited, item.Href)
-		iterateUrlListToExtractLink(item.Href, visited, depth)
+		if _, err := iterateUrlListToExtractLink(item.Href, visited, depth); err != nil {
+			continue
+		}
 	}
 
 	return visited, nil
@@ -127,7 +132,11 @@ func crawlHTML(url string) ([]byte, error) {
 		return nil, err
 	}
 
-	defer resp.Body.Close()
+	defer func(Body io.ReadCloser) {
+		if err := Body.Close(); err != nil {
+			return
+		}
+	}(resp.Body)
 
 	body, err := io.ReadAll(resp.Body)
 	if err != nil {
