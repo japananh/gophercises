@@ -1,11 +1,11 @@
 package main
 
 import (
-	"gophercises/cyoa"
-	"gophercises/link"
-	"gophercises/quiz"
-	"gophercises/sitemap"
-	"gophercises/urlshort"
+	"github.com/japananh/gophercises/cyoa"
+	"github.com/japananh/gophercises/link"
+	"github.com/japananh/gophercises/quiz"
+	"github.com/japananh/gophercises/sitemap"
+	"github.com/japananh/gophercises/urlshort"
 )
 
 func main() {
