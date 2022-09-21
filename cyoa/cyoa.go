@@ -6,8 +6,6 @@ import (
 	"flag"
 	"fmt"
 	"html/template"
-	"io/ioutil"
-	"log"
 	"net/http"
 	"os"
 	"strconv"
@@ -34,17 +32,24 @@ type State struct {
 	Content   Story
 }
 
-func RunServer(htmlPath string, jsonPath string) {
+func RunServer(htmlPath string, jsonPath string) (err error) {
 	html, err := template.ParseFiles(htmlPath)
-	checkErr(err)
+	if err != nil {
+		return err
+	}
+
 	tmpl := template.Must(html, err)
 
-	fileContent, err := ioutil.ReadFile(jsonPath)
-	checkErr(err)
+	fileContent, err := os.ReadFile(jsonPath)
+	if err != nil {
+		return err
+	}
 
 	var data storyMap
 	err = data.UnMarshal(fileContent)
-	checkErr(err)
+	if err != nil {
+		return err
+	}
 
 	PageTitle := "Choose Your Own Adventure"
 	state := State{PageTitle: PageTitle, Content: data["intro"]}
@@ -55,23 +60,30 @@ func RunServer(htmlPath string, jsonPath string) {
 		go handler("/cyoa/"+key, state, tmpl)
 	}
 
-	err = http.ListenAndServe(":80", nil)
-	checkErr(err)
+	if err = http.ListenAndServe(":80", nil); err != nil {
+		return err
+	}
+
+	return
 }
 
 func handler(path string, data State, tmpl *template.Template) {
 	http.HandleFunc(path, func(w http.ResponseWriter, r *http.Request) {
-		tmpl.Execute(w, data)
+		_ = tmpl.Execute(w, data)
 	})
 }
 
-func RunCLI(jsonPath string) {
-	fileContent, err := ioutil.ReadFile(jsonPath)
-	checkErr(err)
+func RunCLI(jsonPath string) (err error) {
+	fileContent, err := os.ReadFile(jsonPath)
+	if err != nil {
+		return err
+	}
 
 	var data storyMap
 	err = data.UnMarshal(fileContent)
-	checkErr(err)
+	if err != nil {
+		return err
+	}
 
 	quit := make(chan bool)
 	arcChan := make(chan string, 1)
@@ -99,6 +111,8 @@ func RunCLI(jsonPath string) {
 
 	<-quit
 	fmt.Println("----------------------- The End! --------------------------")
+
+	return
 }
 
 func readStory(story Story, arcChan chan<- string, quit chan bool) {
@@ -121,7 +135,9 @@ func readStory(story Story, arcChan chan<- string, quit chan bool) {
 	reader := bufio.NewReader(os.Stdin)
 	for {
 		text, err := reader.ReadString('\n')
-		checkErr(err)
+		if err != nil {
+			break
+		}
 		text = strings.TrimSpace(text)
 		text = strings.Replace(text, "\n", "", -1) // convert CRLF to LF
 
@@ -131,11 +147,5 @@ func readStory(story Story, arcChan chan<- string, quit chan bool) {
 		}
 
 		fmt.Print("Oops. Invalid option. Please try again.\n-> ")
-	}
-}
-
-func checkErr(err error) {
-	if err != nil {
-		log.Fatal("Program exited due to error: ", err)
 	}
 }

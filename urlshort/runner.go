@@ -2,11 +2,11 @@ package urlshort
 
 import (
 	"fmt"
-	"io/ioutil"
 	"net/http"
+	"os"
 )
 
-func RunUrlshort() {
+func RunUrlshort() (err error) {
 	mux := defaultMux()
 
 	// Build the MapHandler using the mux as the fallback
@@ -27,18 +27,22 @@ func RunUrlshort() {
 
 	yaml, err := readFile("./urlshort/paths.json")
 	if err != nil {
-		panic(err)
+		return err
 	}
 
 	yamlHandler, err := YAMLHandler(yaml, mapHandler)
 	if err != nil {
-		panic(err)
+		return err
 	}
 
 	fmt.Println("Starting the server on :8080")
 	// http.ListenAndServe(":8080", mapHandler)
 
-	http.ListenAndServe(":8080", yamlHandler)
+	if err := http.ListenAndServe(":8080", yamlHandler); err != nil {
+		return err
+	}
+
+	return
 }
 
 func defaultMux() *http.ServeMux {
@@ -47,14 +51,14 @@ func defaultMux() *http.ServeMux {
 	return mux
 }
 
-func hello(w http.ResponseWriter, r *http.Request) {
-	fmt.Fprintln(w, "Hello, world!")
+func hello(w http.ResponseWriter, _ *http.Request) {
+	_, _ = fmt.Fprintln(w, "Hello, world!")
 }
 
-func readFile(path string) ([]byte, error) {
-	yamlFile, err := ioutil.ReadFile(path)
+func readFile(path string) (yamlFile []byte, err error) {
+	yamlFile, err = os.ReadFile(path)
 	if err != nil {
 		return nil, err
 	}
-	return yamlFile, nil
+	return
 }

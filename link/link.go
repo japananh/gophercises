@@ -4,7 +4,6 @@ import (
 	"fmt"
 	"golang.org/x/net/html"
 	"io"
-	"log"
 	"os"
 	"strings"
 )
@@ -14,21 +13,23 @@ type Link struct {
 	Text string
 }
 
-func Runner(filename string) {
+func Runner(filename string) (err error) {
 	s, err := os.Open(filename)
 	if err != nil {
-		log.Fatal(err)
+		return err
 	}
 
 	links, err := Parse(s)
 	if err != nil {
-		log.Fatal(err)
+		return err
 	}
 
 	for _, i := range links {
 		fmt.Println("Href: ", i.Href)
 		fmt.Println("Text: ", i.Text)
 	}
+
+	return
 }
 
 // Parse parses the HTML file and returns Links
@@ -57,8 +58,7 @@ func getAllLinks(n *html.Node) []Link {
 	return links
 }
 
-func extractText(n *html.Node) string {
-	var text string
+func extractText(n *html.Node) (text string) {
 	if n.Type != html.ElementNode && n.Data != "a" && n.Type != html.CommentNode {
 		text = n.Data
 	}

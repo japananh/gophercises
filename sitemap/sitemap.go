@@ -6,7 +6,6 @@ import (
 	"github.com/japananh/gophercises/link"
 	"golang.org/x/exp/slices"
 	"io"
-	"log"
 	"net/http"
 	urlLib "net/url"
 	"os"
@@ -27,22 +26,25 @@ type Url struct {
 	Loc string `xml:"loc"`
 }
 
-func Crawl() {
+func Crawl() (err error) {
 	input := readFlags("https://www.calhoun.io/", 1)
 	var visited []string
 	linkList, err := iterateUrlListToExtractLink(input.url, visited, input.depth)
-	checkErr(err)
+	if err != nil {
+		return err
+	}
 
 	// create a xml file
 	filePath := "./sitemap/sitemap.xml"
-	_ = os.Remove(filePath)
 	xmlFile, err := os.Create(filePath)
-	checkErr(err)
+	if err != nil {
+		return err
+	}
 
 	// write the header to xml file
 	xmlWriter := io.Writer(xmlFile)
 	if _, err := xmlFile.WriteString(xml.Header); err != nil {
-		checkErr(err)
+		return err
 	}
 
 	enc := xml.NewEncoder(xmlWriter)
@@ -55,8 +57,10 @@ func Crawl() {
 		content.Urls = append(content.Urls, Url{Loc: item})
 	}
 	if err := enc.Encode(&content); err != nil {
-		checkErr(err)
+		return err
 	}
+
+	return nil
 }
 
 func iterateUrlListToExtractLink(domain string, visited []string, depth int) ([]string, error) {
@@ -147,14 +151,8 @@ func crawlHTML(url string) ([]byte, error) {
 }
 
 func readFlags(defaultURL string, defaultDepth int) *input {
-	url := flag.String("url", defaultURL, "url")
+	url := flag.String("url", defaultURL, "an url")
 	depth := flag.Int("depth", defaultDepth, "maximum number of links to follow when building a sitemap")
 	flag.Parse()
 	return &input{url: *url, depth: *depth}
-}
-
-func checkErr(err error) {
-	if err != nil {
-		log.Fatal("Program exited due to ", err)
-	}
 }

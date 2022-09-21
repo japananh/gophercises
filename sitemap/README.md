@@ -13,7 +13,6 @@ https://github.com/gophercises/sitemap/blob/master/README.md
 - [x] Add a `depth` flag using BFS (breath-first search algorithm)
 - [ ] Write test
 
-
 ## Setup
 
 To run this project, you need to install [Go](https://go.dev/doc/install), an editor/IDE such as VSCode/Goland.
