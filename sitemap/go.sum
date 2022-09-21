@@ -1,0 +1,6 @@
+github.com/japananh/gophercises/link v0.0.0-20220921070518-41e7f2dc3ffe h1:RueIs8tl1b0lTGJxxuoa66areXt8lfI0u7qYY5bhvMA=
+github.com/japananh/gophercises/link v0.0.0-20220921070518-41e7f2dc3ffe/go.mod h1:aeC8VT6XNyVTZCuDuWCe2+ZXgxPF10AZi6kmeImS3cs=
+golang.org/x/exp v0.0.0-20220921023135-46d9e7742f1e h1:Ctm9yurWsg7aWwIpH9Bnap/IdSVxixymIb3MhiMEQQA=
+golang.org/x/exp v0.0.0-20220921023135-46d9e7742f1e/go.mod h1:cyybsKvd6eL0RnXn6p/Grxp8F5bW7iYuBgsNCOHpMYE=
+golang.org/x/net v0.0.0-20220920203100-d0c6ba3f52d9 h1:asZqf0wXastQr+DudYagQS8uBO8bHKeYD1vbAvGmFL8=
+golang.org/x/net v0.0.0-20220920203100-d0c6ba3f52d9/go.mod h1:YDH+HFinaLZZlnHAfSS6ZXJJ9M9t4Dl22yv3iI2vPwk=
