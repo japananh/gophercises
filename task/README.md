@@ -4,9 +4,13 @@ Exercise #7: CLI Task Manager
 
 https://github.com/gophercises/task
 
-## TODO
+## TODOs
 
-- [ ] 
+- [x] Build the CLI shell using lib from [this list](https://github.com/avelino/awesome-go#command-line). 
+- [x] Add feat: add - adds a new task to our list
+- [x] Add feat: list - lists all of our incomplete tasks
+- [x] Add feat: do - marks a task as complete
+- [ ] Write the [BoltDB](https://github.com/boltdb/bolt) interactions
 
 ## Setup
 
