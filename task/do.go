@@ -11,8 +11,9 @@ var doCmd = &cobra.Command{
 	Short:   "Resolve a task",
 	Args:    cobra.ExactArgs(1),
 	Run: func(cmd *cobra.Command, args []string) {
-		res := Resolve(args[0])
-		fmt.Println(res)
+		if err := Resolve(args[0]); err != nil {
+			fmt.Println(err)
+		}
 	},
 }
 

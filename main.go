@@ -23,7 +23,7 @@ const (
 
 func main() {
 	defaultExercise := "task"
-	exName := flag.String("exercise name", defaultExercise, "exercise name")
+	exName := flag.String("ex-name", defaultExercise, "exercise name")
 
 	switch *exName {
 	case Cyoa:
@@ -50,6 +50,9 @@ func main() {
 			log.Fatal(err)
 		}
 	case Task:
+		if err := task.InitDatabase(); err != nil {
+			log.Fatal(err)
+		}
 		task.Execute()
 	}
 }

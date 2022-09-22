@@ -12,7 +12,9 @@ var addCmd = &cobra.Command{
 	Short:   "Add a task",
 	Args:    cobra.ExactArgs(1),
 	Run: func(cmd *cobra.Command, args []string) {
-		fmt.Println(Add(args[0]))
+		if err := Add(args[0]); err != nil {
+			fmt.Println(err)
+		}
 	},
 }
 

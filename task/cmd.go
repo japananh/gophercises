@@ -1,35 +1,40 @@
 package task
 
-import "fmt"
+import (
+	"fmt"
+	bolt "go.etcd.io/bbolt"
+)
 
-var todos []string
-
-func Add(input string) bool {
-	if input == "" {
-		return false
-	}
-	if todos == nil {
-		todos = []string{}
-	}
-	todos = append(todos, input)
-	fmt.Println(todos)
-	return true
-}
-
-func Resolve(input string) bool {
-	if input == "" || todos == nil || len(todos) == 0 {
-		return false
-	}
-	tasks := make([]string, 0)
-	for _, t := range todos {
-		if input != t {
-			tasks = append(tasks, t)
+func Add(input string) error {
+	err := db.Update(func(tx *bolt.Tx) error {
+		err := tx.Bucket([]byte("DB")).Bucket([]byte(TodoBucketName)).Put([]byte(input), []byte(input))
+		if err != nil {
+			return fmt.Errorf("could not insert entry: %v", err)
 		}
-	}
-	fmt.Println(todos)
-	return true
+		return nil
+	})
+	fmt.Println("Successfully added:", input)
+	return err
 }
 
-func List() []string {
-	return todos
+func Resolve(input string) error {
+	return db.Update(func(tx *bolt.Tx) error {
+		err := tx.Bucket([]byte("DB")).Bucket([]byte(TodoBucketName)).Delete([]byte(input))
+		if err != nil {
+			return fmt.Errorf("could not delete task: %v", err)
+		}
+		return nil
+	})
+}
+
+func List() error {
+	return db.View(func(tx *bolt.Tx) error {
+		b := tx.Bucket([]byte("DB")).Bucket([]byte("TODOS"))
+		if err := b.ForEach(func(k, v []byte) error {
+			return fmt.Errorf("key: %s, value: %s\n", string(k), string(v))
+		}); err != nil {
+			return err
+		}
+		return nil
+	})
 }

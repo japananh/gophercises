@@ -11,7 +11,9 @@ var listCmd = &cobra.Command{
 	Short:   "List all tasks",
 	Args:    cobra.ExactArgs(0),
 	Run: func(cmd *cobra.Command, args []string) {
-		fmt.Println(List())
+		if err := List(); err != nil {
+			fmt.Println(err)
+		}
 	},
 }
 
