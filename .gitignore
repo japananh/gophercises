@@ -2,4 +2,8 @@
 .vscode/
 .DS_STORE
 
+# file generate from sitemap module
 /sitemap/sitemap.xml
+
+# file generate from task module
+test.db
