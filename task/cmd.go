@@ -23,6 +23,7 @@ func Resolve(input string) error {
 		if err != nil {
 			return fmt.Errorf("could not delete task: %v", err)
 		}
+		fmt.Println("Successfully deleted:", input)
 		return nil
 	})
 }
@@ -30,9 +31,11 @@ func Resolve(input string) error {
 func List() error {
 	return db.View(func(tx *bolt.Tx) error {
 		b := tx.Bucket([]byte("DB")).Bucket([]byte("TODOS"))
-		if err := b.ForEach(func(k, v []byte) error {
-			return fmt.Errorf("key: %s, value: %s\n", string(k), string(v))
-		}); err != nil {
+		err := b.ForEach(func(k, v []byte) error {
+			fmt.Printf("- key: %s\n  value: %s\n", string(k), string(v))
+			return nil
+		})
+		if err != nil {
 			return err
 		}
 		return nil

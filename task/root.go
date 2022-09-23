@@ -15,15 +15,13 @@ var rootCmd = &cobra.Command{
 	Short:   "task - a simple CLI to transform and inspect strings",
 	Long: `task is a super fancy CLI (kidding)
    
-One can use task to modify or inspect strings straight from the terminal`,
-	Run: func(cmd *cobra.Command, args []string) {
-
-	},
+One can use task to manage todos by adding/accomplishing a task or preview all tasks straight from the terminal`,
 }
 
-func Execute() {
+func Execute() error {
 	if err := rootCmd.Execute(); err != nil {
 		_, _ = fmt.Fprintf(os.Stderr, "Whoops. There was an error while executing your CLI '%s'", err)
-		os.Exit(1)
+		return err
 	}
+	return nil
 }

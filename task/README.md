@@ -10,14 +10,19 @@ https://github.com/gophercises/task
 - [x] Add feat: add - adds a new task to our list
 - [x] Add feat: list - lists all of our incomplete tasks
 - [x] Add feat: do - marks a task as complete
-- [ ] Write the [BoltDB](https://github.com/boltdb/bolt) interactions
+- [x] Write the [BoltDB](https://github.com/boltdb/bolt) interactions
 
 ## Setup
 
 To run this project, you need to install [Go](https://go.dev/doc/install), an editor/IDE such as VSCode/Goland.
 
 ```bash
-# Run these command in the root folder
+# Run these commands in the root folder
 go mod tidy
-go run main.go
+# List all tasks 
+go run main.go list
+# Add a task
+go run main.go add "read a book"
+# Accomplish a task
+go run main.go do "read a book"
 ```

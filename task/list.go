@@ -12,7 +12,7 @@ var listCmd = &cobra.Command{
 	Args:    cobra.ExactArgs(0),
 	Run: func(cmd *cobra.Command, args []string) {
 		if err := List(); err != nil {
-			fmt.Println(err)
+			fmt.Println("Error when list task:", err)
 		}
 	},
 }

@@ -5,7 +5,6 @@ import (
 	"github.com/spf13/cobra"
 )
 
-var onlyDigits bool
 var addCmd = &cobra.Command{
 	Use:     "add",
 	Aliases: []string{"add"},
@@ -13,12 +12,11 @@ var addCmd = &cobra.Command{
 	Args:    cobra.ExactArgs(1),
 	Run: func(cmd *cobra.Command, args []string) {
 		if err := Add(args[0]); err != nil {
-			fmt.Println(err)
+			fmt.Println("Error when add a task:", err)
 		}
 	},
 }
 
 func init() {
-	addCmd.Flags().BoolVarP(&onlyDigits, "digits", "d", false, "Count only digits")
 	rootCmd.AddCommand(addCmd)
 }

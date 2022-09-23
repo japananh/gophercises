@@ -53,6 +53,8 @@ func main() {
 		if err := task.InitDatabase(); err != nil {
 			log.Fatal(err)
 		}
-		task.Execute()
+		if err := task.Execute(); err != nil {
+			log.Fatal(err)
+		}
 	}
 }
