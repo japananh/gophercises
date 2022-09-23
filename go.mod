@@ -27,7 +27,7 @@ replace (
 	github.com/japananh/gophercises/link v0.0.0-20220921070518-41e7f2dc3ffe => ./link
 	github.com/japananh/gophercises/quiz v0.0.0-20220921080512-d59d70964889 => ./quiz
 	github.com/japananh/gophercises/sitemap v0.0.0-20220921080512-d59d70964889 => ./sitemap
-	github.com/japananh/gophercises/urlshort v0.0.0-20220921080512-d59d70964889 => ./urlshort
 	github.com/japananh/gophercises/task v0.0.0-20220922081813-dc578e53e680 => ./task
+	github.com/japananh/gophercises/urlshort v0.0.0-20220921080512-d59d70964889 => ./urlshort
 
 )
