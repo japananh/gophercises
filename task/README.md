@@ -11,6 +11,8 @@ https://github.com/gophercises/task
 - [x] Add feat: list - lists all of our incomplete tasks
 - [x] Add feat: do - marks a task as complete
 - [x] Write the [BoltDB](https://github.com/boltdb/bolt) interactions
+- [x] Add `rm` command to remove a task
+- [ ] Add unit tests
 
 ## Setup
 
@@ -19,10 +21,12 @@ To run this project, you need to install [Go](https://go.dev/doc/install), an ed
 ```bash
 # Run these commands in the root folder
 go mod tidy
-# List all tasks 
-go run main.go list
-# Add a task
-go run main.go add "read a book"
+# List all tasks, default -c=false
+go run main.go list -c=true
+# Add a task with name and description
+go run main.go add "read a book" "read the first 30 pages"
 # Accomplish a task
-go run main.go do "read a book"
+go run main.go do "09eb5e0b-8b7a-4527-b5b6-534bd4257840"
+# Remove a task
+go run main.go rm "09eb5e0b-8b7a-4527-b5b6-534bd4257840"
 ```

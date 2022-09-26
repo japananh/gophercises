@@ -9,7 +9,7 @@ import (
 )
 
 type Task struct {
-	IsCompleted bool   `json:"is_done"`
+	IsCompleted bool   `json:"is_completed"`
 	Id          string `json:"id"`
 	Title       string `json:"name"`
 	Desc        string `json:"desc"`
@@ -17,22 +17,25 @@ type Task struct {
 }
 
 type Filter struct {
-	IsCompleted bool `json:"is_completed,omitempty"`
+	IsCompleted bool `json:"is_completed"`
 }
 
 func Add(title string, desc string) error {
+	// Validate data
 	if title == "" || desc == "" {
 		return fmt.Errorf("title or description couldn't be empty")
 	}
 
+	// Find duplicated task
 	dupTask, err := Get(title)
 	if err != nil {
 		return fmt.Errorf("could not add task: %v", err)
 	}
-	if dupTask.Title == title {
+	if dupTask != nil && dupTask.Title == title {
 		return fmt.Errorf("title cannot be duplicated")
 	}
 
+	// Prepare data
 	id := uuid.New().String()
 	task := Task{
 		Id:          id,
@@ -46,6 +49,7 @@ func Add(title string, desc string) error {
 		return fmt.Errorf("could not marshal json: %v", err)
 	}
 
+	// Create task
 	err = db.Update(func(tx *bolt.Tx) error {
 		err := tx.Bucket([]byte("DB")).Bucket([]byte(TodoBucketName)).Put([]byte(id), taskByte)
 		if err != nil {
@@ -57,23 +61,23 @@ func Add(title string, desc string) error {
 		return fmt.Errorf("could not add task: %v", err)
 	}
 
-	fmt.Println("Successfully added:", title)
+	fmt.Println("Successfully added:", title, id)
 
 	return nil
 }
 
-func Remove(title string) error {
+func Remove(id string) error {
 	return db.Update(func(tx *bolt.Tx) error {
-		err := tx.Bucket([]byte("DB")).Bucket([]byte(TodoBucketName)).Delete([]byte(title))
-		if err != nil {
-			return fmt.Errorf("could not delete task: %v", err)
+		if err := tx.Bucket([]byte("DB")).Bucket([]byte(TodoBucketName)).Delete([]byte(id)); err != nil {
+			return fmt.Errorf("could not delete task %s: %v", id, err)
 		}
-		fmt.Println("Successfully deleted:", title)
+		fmt.Println("Successfully deleted task id:", id)
 		return nil
 	})
 }
 
 func Resolve(id string) error {
+	// Check for existed task
 	found, err := Get(id)
 	if err != nil {
 		return fmt.Errorf("task not found")
@@ -92,26 +96,29 @@ func Resolve(id string) error {
 		if err != nil {
 			return fmt.Errorf("could not delete task: %v", err)
 		}
-		fmt.Println("Successfully deleted:", id)
+		fmt.Println("Successfully resolved task id:", id)
 		return nil
 	})
 }
 
 func Get(id string) (task *Task, err error) {
 	if id == "" {
-		return nil, fmt.Errorf("title shouldn't be empty")
+		return nil, fmt.Errorf("task id shouldn't be empty")
 	}
 
 	var found Task
-
-	if err := db.View(func(tx *bolt.Tx) error {
+	err = db.View(func(tx *bolt.Tx) error {
 		b := tx.Bucket([]byte("DB")).Bucket([]byte(TodoBucketName)).Get([]byte(id))
+		if len(b) == 0 {
+			return nil
+		}
 		if err = json.Unmarshal(b, &found); err != nil {
 			return err
 		}
 		task = &found
 		return nil
-	}); err != nil {
+	})
+	if err != nil {
 		return nil, err
 	}
 
