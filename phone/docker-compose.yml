@@ -1,0 +1,19 @@
+version: "3"
+services:
+  db:
+    image: postgres:14-alpine
+    volumes:
+      - "/var/gophercises-phone/postgres/data:/var/lib/postgresql/data"
+    restart: unless-stopped
+    ports:
+      - "5430:5432"
+    environment:
+      POSTGRES_DB: gophercises_phone
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      TZ: UTC
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "1024M"
+        max-file: "3"

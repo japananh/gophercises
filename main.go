@@ -19,6 +19,7 @@ const (
 	Sitemap  = "sitemap"
 	UrlShort = "urlshort"
 	Task     = "task"
+	Phone    = "phone"
 )
 
 func main() {
@@ -56,5 +57,7 @@ func main() {
 		if err := task.Execute(); err != nil {
 			log.Fatal(err)
 		}
+	case Phone:
+		// TODO
 	}
 }
