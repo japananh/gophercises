@@ -7,7 +7,8 @@ https://github.com/gophercises/phone/blob/master/README.md
 ## TODO
 
 - [x] Setup DB
-- [ ] Normalize phone number in DB, then remove duplicate data
+- [x] Normalize phone number in DB (format: `##########`)
+- [x] Remove duplicate data
 - [ ] Write unit test
 
 ## Setup
@@ -28,5 +29,5 @@ To run this project, you need to install [Go](https://go.dev/doc/install), an ed
 ```bash
 # Run these command in the root folder
 go mod tidy
-go run main.go 
+go run main.go
 ```

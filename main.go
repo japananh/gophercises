@@ -6,6 +6,7 @@ import (
 
 	"github.com/japananh/gophercises/cyoa"
 	"github.com/japananh/gophercises/link"
+	"github.com/japananh/gophercises/phone"
 	"github.com/japananh/gophercises/quiz"
 	"github.com/japananh/gophercises/sitemap"
 	"github.com/japananh/gophercises/task"
@@ -29,35 +30,37 @@ func main() {
 	switch *exName {
 	case Cyoa:
 		if err := cyoa.RunServer("./cyoa/layout.html", "./cyoa/story.json"); err != nil {
-			log.Fatal(err)
+			log.Fatalln(err)
 		}
 		if err := cyoa.RunCLI("./cyoa/story.json"); err != nil {
-			log.Fatal(err)
+			log.Fatalln(err)
 		}
 	case Link:
 		if err := link.Runner("./link/ex1.html"); err != nil {
-			log.Fatal(err)
+			log.Fatalln(err)
 		}
 	case Quiz:
 		if err := quiz.RunQuiz(); err != nil {
-			log.Fatal(err)
+			log.Fatalln(err)
 		}
 	case Sitemap:
 		if err := sitemap.Crawl(); err != nil {
-			log.Fatal(err)
+			log.Fatalln(err)
 		}
 	case UrlShort:
 		if err := urlshort.RunUrlshort(); err != nil {
-			log.Fatal(err)
+			log.Fatalln(err)
 		}
 	case Task:
 		if err := task.InitDatabase(); err != nil {
-			log.Fatal(err)
+			log.Fatalln(err)
 		}
 		if err := task.Execute(); err != nil {
-			log.Fatal(err)
+			log.Fatalln(err)
 		}
 	case Phone:
-		// TODO
+		if err := phone.Start(); err != nil {
+			log.Fatalln(err)
+		}
 	}
 }

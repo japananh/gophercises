@@ -2,6 +2,9 @@
   <configuration default="false" name="go build main.go" type="GoApplicationRunConfiguration" factoryName="Go Application" nameIsGenerated="true">
     <module name="gophercises" />
     <working_directory value="$PROJECT_DIR$" />
+    <envs>
+      <env name="DSN" value="host=localhost user=postgres password=postgres dbname=gophercises_phone port=5430 sslmode=disable TimeZone=Asia/Bangkok" />
+    </envs>
     <kind value="FILE" />
     <directory value="$PROJECT_DIR$" />
     <filePath value="$PROJECT_DIR$/main.go" />

@@ -7,3 +7,7 @@
 
 # file generate from task module
 test.db
+
+# ignore envỉroment variables
+.env
+/phone/.env
