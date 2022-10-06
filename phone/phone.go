@@ -15,12 +15,14 @@ type PhoneNumbers struct {
 	Phone string `json:"phone" gorm:"column:phone;"`
 }
 
+const TableName = "phone_numbers"
+
 func (PhoneNumbers) TableName() string {
-	return "phone_numbers"
+	return TableName
 }
 
 func Start() (err error) {
-	db, err := connectDB()
+	db, err := ConnectDB(os.Getenv("DSN"))
 	if err != nil {
 		return fmt.Errorf("failed to connect database: %s", err)
 	}
@@ -32,7 +34,7 @@ func Start() (err error) {
 
 	tmp := map[string]bool{}
 	for _, item := range phoneList {
-		fl := normalize(item.Phone)
+		fl := Normalize(item.Phone)
 
 		if val, _ := tmp[fl]; val {
 			if err := db.Table(PhoneNumbers{}.TableName()).Delete(&PhoneNumbers{Id: item.Id}).Error; err != nil {
@@ -51,9 +53,9 @@ func Start() (err error) {
 	return
 }
 
-func connectDB() (db *gorm.DB, err error) {
+func ConnectDB(dsn string) (db *gorm.DB, err error) {
 	db, err = gorm.Open(postgres.New(postgres.Config{
-		DSN:                  os.Getenv("DSN"),
+		DSN:                  dsn,
 		PreferSimpleProtocol: true, // disables implicit prepared statement usage
 	}), &gorm.Config{
 		NamingStrategy: schema.NamingStrategy{
@@ -62,7 +64,7 @@ func connectDB() (db *gorm.DB, err error) {
 	return
 }
 
-func normalize[T string | int](in T) (out string) {
+func Normalize[T string | int](in T) (out string) {
 	sampleRegexp := regexp.MustCompile(`\d+`)
 	s := fmt.Sprintf("%v", in)
 	match := sampleRegexp.FindAllString(s, -1)
