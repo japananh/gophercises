@@ -24,6 +24,17 @@ goose -dir db/migrations postgres "postgresql://postgres:postgres@127.0.0.1:5430
 goose -dir db/migrations postgres "postgresql://postgres:postgres@127.0.0.1:5430/gophercises_phone?sslmode=disable" up
 ```
 
+This project uses [Task](https://github.com/go-task/task) to manage scripts. You need to install it before use. All scripts are defined in `phone/Taskfile.yml`.
+
+```bash
+# Install task in macos
+brew install go-task/tap/go-task
+# Run setup
+task setup
+# Delete all containers and their volumes
+task cleanup
+```
+
 To run this project, you need to install [Go](https://go.dev/doc/install), an editor/IDE such as VSCode/Goland.
 
 ```bash

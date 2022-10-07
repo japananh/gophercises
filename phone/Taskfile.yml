@@ -1,0 +1,23 @@
+version: '3'
+
+tasks:
+  test:
+    desc: Run all the go tests.
+    cmds:
+      - go test --cover ./...
+
+  setup:
+    desc: Create docker containers and run migration.
+    cmds:
+      - task cleanup
+      - docker compose up --build -d
+
+  migrate:
+    desc: Run migration.
+    cmds:
+      - goose -dir db/migrations postgres "postgresql://postgres:postgres@127.0.0.1:5430/gophercises_phone?sslmode=disable" up
+
+  cleanup:
+    desc: Remove all docker containers and their volumes.
+    cmds:
+      - docker compose down --volumes

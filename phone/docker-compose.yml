@@ -1,9 +1,10 @@
 version: "3"
+
 services:
   db:
     image: postgres:14-alpine
     volumes:
-      - "/var/gophercises-phone/postgres/data:/var/lib/postgresql/data"
+      - db_data:/var/lib/postgresql/data
     restart: unless-stopped
     ports:
       - "5430:5432"
@@ -17,3 +18,9 @@ services:
       options:
         max-size: "1024M"
         max-file: "3"
+
+# Create volumes to rebuild faster
+volumes:
+  db_data:
+  cache:
+    driver: local
