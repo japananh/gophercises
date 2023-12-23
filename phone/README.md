@@ -9,7 +9,7 @@ https://github.com/gophercises/phone/blob/master/README.md
 - [x] Setup DB
 - [x] Normalize phone number in DB (format: `##########`)
 - [x] Remove duplicate data
-- [ ] Write unit test
+- [x] Write unit test
 
 ## Setup
 

@@ -1,10 +1,11 @@
 package phone_test
 
 import (
-	"github.com/japananh/gophercises/phone"
-	"gorm.io/gorm"
 	"os"
 	"testing"
+
+	"github.com/japananh/gophercises/phone"
+	"gorm.io/gorm"
 )
 
 func TestPhoneNumbers_TableName(t *testing.T) {
@@ -25,7 +26,7 @@ func TestPhoneNumbers_TableName(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			ph := phone.PhoneNumbers{
+			ph := phone.Numbers{
 				Id:    tt.fields.Id,
 				Phone: tt.fields.Phone,
 			}
@@ -35,25 +36,6 @@ func TestPhoneNumbers_TableName(t *testing.T) {
 		})
 	}
 }
-
-//func TestStart(t *testing.T) {
-//	tests := []struct {
-//		name    string
-//		wantErr bool
-//	}{
-//		{
-//			name:    "Test start phone successfully",
-//			wantErr: true,
-//		},
-//	}
-//	for _, tt := range tests {
-//		t.Run(tt.name, func(t *testing.T) {
-//			if err := phone.Start(); (err != nil) != tt.wantErr {
-//				t.Errorf("Start() error = %v, wantErr %v", err, tt.wantErr)
-//			}
-//		})
-//	}
-//}
 
 func Test_connectDB(t *testing.T) {
 	t.Setenv("DSN", "host=localhost user=postgres password=postgres dbname=gophercises_phone port=5430 sslmode=disable TimeZone=Asia/Bangkok")
